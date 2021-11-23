@@ -33,15 +33,23 @@ public class Cocktail {
 
     }
     public List<String> setKeyInList(List<String> list,String key) {
+        boolean isEmpty=false;
+        if(list.toArray().length==0)
+            isEmpty=true;
+
         for(int i=1;i<16;i++){
-            list.add(key+String.valueOf(i));
+            if(isEmpty)
+                list.add(key+String.valueOf(i));
+            else
+                list.set(i-1,key+String.valueOf(i));
+
         }
         return list;
     }
     public List<String> removeItemInList(List<String> list,String item) {
 
-        for(int i=list.toArray().length-1;!list.contains(item)&&i>=0;i--){
-            if(list.get(i).contains(item))
+        for(int i=list.toArray().length-1;!list.contains(null)&&i>=0;i--){
+            if(list.get(i).contains(item.toString()))
                 list.remove(i);
         }
         return list;
@@ -90,20 +98,32 @@ public class Cocktail {
                     int test233=0;
                     List<String> listIngredients= new ArrayList();
                     List<String> listMeasures= new ArrayList();
-                    listIngredients=setKeyInList(listIngredients,"strIngredient");
-                    listMeasures=setKeyInList(listMeasures,"strMeasure");
 
+                    //listMeasures=setKeyInList(listMeasures,"strMeasure");
                     for (int i = 0; i < arrayDrinks.length(); i++)
                     {
+                        listIngredients=setKeyInList(listIngredients,"strIngredient");
+                        listMeasures=setKeyInList(listMeasures,"strMeasure");
                         listIds.add(Integer.valueOf(arrayDrinks.getJSONObject(i).getString("idDrink"))) ;
                         listNames.add(arrayDrinks.getJSONObject(i).getString("strDrink")) ;
                         listInstructions.add(arrayDrinks.getJSONObject(i).getString("strInstructions")) ;
                         listImgs.add(arrayDrinks.getJSONObject(i).getString("strDrinkThumb")) ;
-                        if(arrayDrinks.getJSONObject(i).getString(listIngredients.get(i))!="null")
-                            listIngredients.set(i,arrayDrinks.getJSONObject(i).getString(listIngredients.get(i)));
+                        for(int j=0;j<listIngredients.toArray().length;j++){
+                            listIngredients.set(j,arrayDrinks.getJSONObject(i).getString(listIngredients.get(j)));
+                        }
+                        listIngredients=removeItemInList(listIngredients,"null");
+                        dicIngredients.put(listNames.get(i),listIngredients);
+                        listIngredients.clear();
 
+                        for(int j=0;j<listMeasures.toArray().length;j++){
+                            listMeasures.set(j,arrayDrinks.getJSONObject(i).getString(listMeasures.get(j)));
+                        }
+                        listMeasures=removeItemInList(listMeasures,"null");
+                        dicMeasures.put(listNames.get(i),listMeasures);
+                        listMeasures.clear();
+                        test233++;
                     }
-                    listIngredients=removeItemInList(listIngredients,"strIngredient");
+
                     int test2=0;
                     test2++;
                 } catch (JSONException e) {
