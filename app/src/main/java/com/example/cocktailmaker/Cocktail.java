@@ -19,14 +19,33 @@ import java.util.Map;
 public class Cocktail {
     String name;
     int id;
-
+    List<Integer> listIds= new ArrayList();
+    List<String> listNames= new ArrayList();
+    List<String> listInstructions= new ArrayList();
+    List<String> listImgs= new ArrayList();
+    Map<String,List<String>> dicIngredients = new HashMap<String,List<String>>();
+    Map<String,List<String>> dicMeasures = new HashMap<String,List<String>>();
     public Cocktail(String name)
     {
         this.name=name;
         this.id=id;
         setCocktailInfo("vodka");
-    }
 
+    }
+    public List<String> setKeyInList(List<String> list,String key) {
+        for(int i=1;i<16;i++){
+            list.add(key+String.valueOf(i));
+        }
+        return list;
+    }
+    public List<String> removeItemInList(List<String> list,String item) {
+
+        for(int i=list.toArray().length-1;!list.contains(item)&&i>=0;i--){
+            if(list.get(i).contains(item))
+                list.remove(i);
+        }
+        return list;
+    }
     public String getNom() {
         return name;
     }
@@ -64,19 +83,29 @@ public class Cocktail {
 
 
 
-                    JSONArray arrayHit = obj.getJSONArray("drinks");
+                    JSONArray arrayDrinks = obj.getJSONArray("drinks");
 
 
 
+                    int test233=0;
+                    List<String> listIngredients= new ArrayList();
+                    List<String> listMeasures= new ArrayList();
+                    listIngredients=setKeyInList(listIngredients,"strIngredient");
+                    listMeasures=setKeyInList(listMeasures,"strMeasure");
 
-                    List<String> listSearch= new ArrayList(); ;
-                    for (int i = 0; i < arrayHit.length(); i++)
+                    for (int i = 0; i < arrayDrinks.length(); i++)
                     {
-                        this.id =Integer.valueOf(arrayHit.getJSONObject(i).getString("id")) ;
-
+                        listIds.add(Integer.valueOf(arrayDrinks.getJSONObject(i).getString("idDrink"))) ;
+                        listNames.add(arrayDrinks.getJSONObject(i).getString("strDrink")) ;
+                        listInstructions.add(arrayDrinks.getJSONObject(i).getString("strInstructions")) ;
+                        listImgs.add(arrayDrinks.getJSONObject(i).getString("strDrinkThumb")) ;
+                        if(arrayDrinks.getJSONObject(i).getString(listIngredients.get(i))!="null")
+                            listIngredients.set(i,arrayDrinks.getJSONObject(i).getString(listIngredients.get(i)));
 
                     }
-
+                    listIngredients=removeItemInList(listIngredients,"strIngredient");
+                    int test2=0;
+                    test2++;
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
