@@ -112,7 +112,8 @@ public class Cocktail {
                             listIngredients.set(j,arrayDrinks.getJSONObject(i).getString(listIngredients.get(j)));
                         }
                         listIngredients=removeItemInList(listIngredients,"null");
-                        dicIngredients.put(listNames.get(i),listIngredients);
+                        List<String> copy= new ArrayList(listIngredients);
+                        dicIngredients.put(listNames.get(i),copy);
                         listIngredients.clear();
 
                         for(int j=0;j<listMeasures.toArray().length;j++){
