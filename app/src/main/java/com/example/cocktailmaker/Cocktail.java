@@ -29,7 +29,7 @@ public class Cocktail {
     {
         this.name=name;
         this.id=id;
-        setCocktailInfo("vodka");
+        setCocktailInfo(name);
 
     }
     public List<String> setKeyInList(List<String> list,String key) {

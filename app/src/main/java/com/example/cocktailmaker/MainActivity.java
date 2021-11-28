@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.view.View;
+import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -36,6 +37,7 @@ public class MainActivity extends AppCompatActivity {
         btSearchValidate= findViewById(R.id.btSearchValidate);
         tvCocktailName= findViewById(R.id.tvCocktailName);
         webView= findViewById(R.id.webView);
+
         ScrollView= findViewById(R.id.ScrollView);
         tvIngredients= findViewById(R.id.tvIngredients);
         setVisibility(false);
@@ -45,12 +47,14 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Cocktail cocktail=new Cocktail(tvSearch.getText().toString());
                 tvCocktailName.setText(cocktail.listNames.get(index));
+
                 webView.loadUrl(cocktail.listImgs.get(index));
                 String ingredients="";
-                //List<String> listIngredients=cocktail.dicIngredients.get(0);
-                for (int i=0;i<cocktail.dicIngredients.size();i++){
+                List<String> listIngredients=cocktail.dicIngredients.get(cocktail.listNames.get(0));
+                for (int i=0;i<listIngredients.size();i++){
 
-                    ingredients+=cocktail.dicIngredients.get(i);
+                    ingredients+=listIngredients.get(i);
+                    ingredients+="\n";
                 }
                 tvIngredients.setText(ingredients);
                 setVisibility(true);
